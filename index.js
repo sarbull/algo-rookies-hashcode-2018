@@ -20,3 +20,15 @@ console.log('vehicles = ', vehicles);
 console.log('rides = ', rides);
 console.log('bonus = ', bonus);
 console.log('steps = ', steps);
+
+var map = new Array(parseInt(rows));
+for(var i = 0; i < rows; i++) {
+  map[i] = new Array(parseInt(columns));
+}
+
+console.log('map', map);
+
+
+for(var step = 0; step <= steps; step++) {
+
+}
