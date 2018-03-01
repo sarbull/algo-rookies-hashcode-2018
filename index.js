@@ -44,6 +44,17 @@ for(var ii = 0; ii < input.rows; ii++) {
   map[ii] = new Array(input.columns);
 }
 
+var vehicles = [];
+for(var iii = 0; iii < input.vehicles; iii++) {
+  vehicles.push({
+    x: 0,
+    y: 0,
+    name: "Car " + iii,
+    onRide: false,
+    rides: []
+  });
+}
+
 console.log('input.rows = ', input.rows);
 console.log('input.columns = ', input.columns);
 console.log('input.vehicles = ', input.vehicles);
@@ -51,32 +62,34 @@ console.log('input.rides = ', input.rides);
 console.log('input.bonus = ', input.bonus);
 console.log('input.steps = ', input.steps);
 // console.log('rides = ', rides);
+// console.log('vehicles = ', vehicles);
 
-var finisedVehiclesRides = [];
 
 function iteration(step) {
-  input.vehicles--; console.log('input.vehicles = ', input.vehicles);
+  vehicles.forEach(function(v) {
+    if(!v.onRide) {
+      v.onRide = true;
 
-  rides.forEach(function(ride) {
-    if(input.vehicles > 0) {
-      if(step === ride.startStep) {
-        ride.steps--;
+      var r = rides.pop();
 
-        // if(ride.steps === 0) {
-        //
-        //   finisedVehiclesRides.push({finished: ride});
-        //
-        //   input.vehicles++;
-        // }
-      } else {
-        // input.vehicles++;
+      v.rides.push(r);
+    } else {
+      var r2 = v.rides[v.rides.length-1];
+
+      if(r2.startStep === step) {
+        console.log('ride started');
+
       }
     }
   });
 }
 
-for(var step = 1; step <= input.steps; step++) {
+for(var step = 0; step < input.steps; step++) {
   iteration(step);
 }
 
-console.log(finisedVehiclesRides);
+
+
+
+
+
