@@ -27,6 +27,50 @@ var Ride = (function(id, x, y, xTo, yTo, startAt, endAt) {
 });
 
 
+function objSort() {
+  var args = arguments,
+    array = args[0],
+    case_sensitive, keys_length, key, desc, a, b, i;
+
+  if (typeof arguments[arguments.length - 1] === 'boolean') {
+    case_sensitive = arguments[arguments.length - 1];
+    keys_length = arguments.length - 1;
+  } else {
+    case_sensitive = false;
+    keys_length = arguments.length;
+  }
+
+  return array.sort(function (obj1, obj2) {
+    for (i = 1; i < keys_length; i++) {
+      key = args[i];
+      if (typeof key !== 'string') {
+        desc = key[1];
+        key = key[0];
+        a = obj1[args[i][0]];
+        b = obj2[args[i][0]];
+      } else {
+        desc = false;
+        a = obj1[args[i]];
+        b = obj2[args[i]];
+      }
+
+      if (case_sensitive === false && typeof a === 'string') {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+      }
+
+      if (! desc) {
+        if (a < b) return -1;
+        if (a > b) return 1;
+      } else {
+        if (a > b) return -1;
+        if (a < b) return 1;
+      }
+    }
+    return 0;
+  });
+}
+
 var Problem = (function(fileName) {
   var array = fs.readFileSync("input/" + fileName + ".in").toString().split("\n");
 
@@ -60,9 +104,7 @@ var Problem = (function(fileName) {
     vehicles.push(v);
   }
 
-  vehicles.sort(function(a, b) {
-    return a.startAt < b.startAt;
-  });
+  rides = objSort(rides, 'startAt', 'steps', 'endAt');
 
   return {
     fileName: fileName,
@@ -96,10 +138,10 @@ var Problem = (function(fileName) {
     iterator: function(step) {
       this.vehicles.forEach(function(v) {
         if(!v.onRide) {
-          var r = rides.pop();
+          var r = rides.shift();
 
           if(r) {
-            if(step >= r.startAt) {
+            if(step >= r.startAt && step <= r.endAt) {
               v.onRide = true;
               v.rides.push(r);
               v.rides[v.rides.length-1].steps--;
