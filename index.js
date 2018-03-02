@@ -24,7 +24,7 @@ for(var i = 0; i < input.rides; i++) {
   var r = problemInput[i+1];
 
   var ride = {
-    id: i+1,
+    id: i,
     x: parseInt(r[0]),
     y: parseInt(r[1]),
     xTo: parseInt(r[2]),
